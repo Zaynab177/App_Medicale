@@ -20,7 +20,7 @@
     <?php if (isset($_SESSION['user_id'])): ?>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/pharmascan/index.php">
+                <a class="navbar-brand" href="index.php">
                     <i class="fas fa-pills me-2"></i>PharmaScan
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,6 @@
                                 <i class="fas fa-user-circle me-1"></i> <?php echo $_SESSION['username']; ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="/views/profile.php"><i class="fas fa-id-card me-1"></i> Profil</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="/controllers/auth_controller.php?action=logout"><i class="fas fa-sign-out-alt me-1"></i> Déconnexion</a></li>
                             </ul>

@@ -1,20 +1,19 @@
-<?php
+<?php 
 // index.php - Page d'accueil
 session_start();
 $pageTitle = "Accueil";
 
-// Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+// Redirection si l'utilisateur n'est pas connecté
 if (!isset($_SESSION['user_id'])) {
     header("Location: /views/auth/login.php");
     exit();
 }
 
-// Vérifier si le fichier header existe
+// Inclusion du header
 $headerPath = __DIR__ . '/includes/header.php';
 if (file_exists($headerPath)) {
     include_once $headerPath;
 } else {
-    // Header de secours si le fichier n'existe pas
     echo '<!DOCTYPE html>
     <html lang="fr">
     <head>
@@ -27,13 +26,10 @@ if (file_exists($headerPath)) {
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
                 <a class="navbar-brand" href="/">PharmaScan</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <span class="nav-link">Bienvenue, ' . (isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Utilisateur') . '</span>
+                            <span class="nav-link">Bienvenue, ' . htmlspecialchars($_SESSION['username']) . '</span>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/controllers/auth_controller.php?action=logout">Déconnexion</a>
@@ -46,36 +42,61 @@ if (file_exists($headerPath)) {
 ?>
 
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Bienvenue sur PharmaScan</h4>
-                </div>
-                <div class="card-body">
-                    <?php if (isset($_SESSION['success'])): ?>
-                        <div class="alert alert-success">
-                            <?php 
-                                echo $_SESSION['success']; 
-                                unset($_SESSION['success']);
-                            ?>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <h5>Bonjour <?php echo htmlspecialchars($_SESSION['username']); ?></h5>
-                    <p>Vous êtes connecté en tant que <strong><?php echo htmlspecialchars($_SESSION['user_role']); ?></strong>.</p>
-                    
-                    <div class="mt-4">
-                        <h6>Fonctionnalités disponibles :</h6>
-                        <ul>
-                            <li>Gestion des médicaments</li>
-                            <li>Scan des ordonnances</li>
-                            <li>Suivi des stocks</li>
-                            <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                                <li><a href="/views/admin/users.php">Gestion des utilisateurs</a></li>
-                            <?php endif; ?>
-                        </ul>
+    <h3 class="mb-4">Bonjour <?php echo htmlspecialchars($_SESSION['username']); ?> !</h3>
+    <p class="mb-4">Vous êtes connecté en tant que <strong><?php echo htmlspecialchars($_SESSION['user_role']); ?></strong>.</p>
+
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success">
+            <?php 
+                echo $_SESSION['success']; 
+                unset($_SESSION['success']);
+            ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="row g-4">
+        <!-- Authentification (réservée aux admins) -->
+        <?php if ($_SESSION['user_role'] === 'admin'): ?>
+            <div class="col-md-6">
+                <div class="card h-100 border-primary">
+                    <div class="card-header bg-primary text-white">Authentification</div>
+                    <div class="card-body">
+                        <p>Gérez l'inscription, la connexion et les rôles des utilisateurs.</p>
+                        <a href="/views/users/index.php" class="btn btn-outline-primary">Gestion des utilisateurs</a>
                     </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <!-- Produits -->
+        <div class="col-md-6">
+            <div class="card h-100 border-success">
+                <div class="card-header bg-success text-white">Gestion des produits</div>
+                <div class="card-body">
+                    <p>Ajoutez, modifiez ou supprimez des produits. Recherchez par catégorie ou suivez les dates d'expiration.</p>
+                    <a href="/views/products/index.php" class="btn btn-outline-success">Voir les produits</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock -->
+        <div class="col-md-6">
+            <div class="card h-100 border-warning">
+                <div class="card-header bg-warning text-dark">Gestion du stock</div>
+                <div class="card-body">
+                    <p>Consultez les entrées/sorties, l'historique des mouvements et les statistiques globales.</p>
+                    <a href="/views/inventory/index.php" class="btn btn-outline-warning">Voir le tableau de bord</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Catégories -->
+        <div class="col-md-6">
+            <div class="card h-100 border-info">
+                <div class="card-header bg-info text-white">Gestion des catégories</div>
+                <div class="card-body">
+                    <p>Créez, modifiez ou supprimez les catégories de produits.</p>
+                    <a href="/views/categories/index.php" class="btn btn-outline-info">Gérer les catégories</a>
                 </div>
             </div>
         </div>
@@ -83,7 +104,7 @@ if (file_exists($headerPath)) {
 </div>
 
 <?php 
-// Footer de secours si le fichier n'existe pas
+// Inclusion du footer
 $footerPath = __DIR__ . '/includes/footer.php';
 if (file_exists($footerPath)) {
     include_once $footerPath;
