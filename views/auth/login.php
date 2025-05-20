@@ -14,7 +14,8 @@ $pageTitle = "Connexion";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #4361ee;
+            --primary-color:rgb(80, 109, 241);
+            
             --primary-hover: #3a56d4;
             --secondary-color: #f8f9fa;
             --accent-color: #48cae4;
