@@ -1,0 +1,63 @@
+-- ================================================================
+-- Script de création de la base de données Pharmascan
+-- Description : Crée les tables nécessaires à la gestion d'une
+--               application de gestion pharmaceutique.
+-- Auteur : [Ton Nom]
+-- Date : [Date]
+-- ================================================================
+
+-- Création de la base de données
+CREATE DATABASE IF NOT EXISTS pharmascan
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE pharmascan;
+
+-- ================================================================
+-- Table : users
+-- Description : Contient les informations des utilisateurs
+-- ================================================================
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  role ENUM('admin', 'pharmacien', 'technicien') NOT NULL DEFAULT 'technicien',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ================================================================
+-- Table : categories
+-- Description : Catégories de produits pharmaceutiques
+-- ================================================================
+CREATE TABLE categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  description TEXT
+);
+
+-- ================================================================
+-- Table : products
+-- Description : Produits pharmaceutiques disponibles
+-- ================================================================
+CREATE TABLE products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  description TEXT,
+  category_id INT,
+  quantity INT NOT NULL DEFAULT 0,
+  expiration_date DATE,
+  price DECIMAL(10, 2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+);
+
+-- ================================================================
+-- Table : inventory_movements
+-- Description : Historique des entrées/sorties de stock
+-- ================================================================
+CREATE TABLE inventory_movements (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_id INT NOT NULL,
+  user_id INT NOT NULL,
+  movement_type ENUM('entrée', 'sortie') NOT NULL,
